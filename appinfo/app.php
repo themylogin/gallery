@@ -75,3 +75,9 @@ $loadScripts = function() use ($appName) {
 
 \OC::$server->getEventDispatcher()->addListener('OCA\Files::loadAdditionalScripts', $loadScripts);
 \OC::$server->getEventDispatcher()->addListener('OCA\Files_Sharing::loadAdditionalScripts', $loadScripts);
+
+if (\method_exists(\OC::$server, 'getContentSecurityPolicyManager')) {
+        $policy = new \OCP\AppFramework\Http\ContentSecurityPolicy();
+        $policy->addAllowedMediaDomain('blob:');
+        \OC::$server->getContentSecurityPolicyManager()->addDefaultPolicy($policy);
+}

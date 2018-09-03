@@ -125,6 +125,20 @@ class ConfigService extends FilesService {
 		$wantedMimes = $this->baseMimeTypes;
 		if ($extraMediaTypes) {
 			$wantedMimes = array_merge($wantedMimes, $this->slideshowMimeTypes);
+			$wantedMimes = array_merge(
+			    $wantedMimes,
+			    array_filter(
+			        array_map(
+			            function($line) {
+			                return explode("\t", $line)[0];
+			            },
+			            explode("\n", file_get_contents("/etc/mime.types"))
+			        ),
+			        function($mimeType) {
+			            return strpos($mimeType, "video/") === 0;
+			        }
+			    )
+			);
 		}
 		foreach ($wantedMimes as $wantedMime) {
 			// Let's see if a preview of files of that media type can be generated

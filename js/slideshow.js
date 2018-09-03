@@ -126,7 +126,7 @@
 						$(img).css('outline', $border + 'px solid ' + image.backgroundColour);
 					}
 
-					this.zoomablePreview.startBigshot(img, this.currentImage, image.mimeType);
+					this.zoomablePreview.startBigshot(img, this.currentImage, image.mimeType, image.videoUrl);
 
 					this._setUrl(image.path);
 					this.controls.show(currentImageId);
@@ -415,6 +415,7 @@
 				|| mimeType === 'image/x-dcraw'
 				|| mimeType === 'application/font-sfnt'
 				|| mimeType === 'application/x-font'
+				|| mimeType.indexOf('video/') === 0
 			);
 		},
 

@@ -129,6 +129,9 @@
 					};
 					downloadUrl =
 						galleryFileAction.buildGalleryUrl('files', '/download/' + file.id, params);
+					var videoUrl = file.mimetype.indexOf('video/') === 0 ?
+						galleryFileAction.buildGalleryUrl('files', '/vod/' + file.id + '/playlist.m3u8', params):
+						null;
 
 					images.push({
 						name: file.name,
@@ -137,7 +140,8 @@
 						mimeType: file.mimetype,
 						permissions: file.permissions,
 						url: imageUrl,
-						downloadUrl: downloadUrl
+						downloadUrl: downloadUrl,
+						videoUrl: videoUrl
 					});
 				}
 			}

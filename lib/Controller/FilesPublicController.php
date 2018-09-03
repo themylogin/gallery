@@ -52,4 +52,17 @@ class FilesPublicController extends FilesController {
 	public function download($fileId, $filename = null) {
 		return parent::download($fileId, $filename);
 	}
+
+	/**
+	 * @PublicPage
+	 *
+	 * For VOD server: return local storage path of video file
+	 *
+	 * @inheritDoc
+	 *
+	 * @param int $fileId the ID of the file we want to serve
+	 */
+	public function vod($fileId) {
+		return parent::vod($fileId);
+	}
 }

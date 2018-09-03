@@ -53,7 +53,7 @@
 		 * @param {number} currentImage
 		 * @param {string} mimeType
 		 */
-		startBigshot: function (image, currentImage, mimeType) {
+		startBigshot: function (image, currentImage, mimeType, videoUrl) {
 			this.currentImage = currentImage;
 			this.mimeType = mimeType;
 			if (this.zoomable !== null) {
@@ -75,17 +75,57 @@
 				maxZoom += 3;
 				this.currentImage.isSmallImage = true;
 			}
+
+			var imgElement = image,
+				videoWidth = imgWidth,
+				videoHeight = imgHeight;
+			if (videoUrl)
+			{
+				var desiredWidth = $(window).width() - 116;
+				var desiredHeight = $(window).height() - 116;
+				if (imgWidth > desiredWidth || imgHeight > desiredHeight)
+				{
+					if (desiredWidth / desiredHeight > imgWidth / imgHeight)
+					{
+						videoWidth = Math.round(imgWidth / imgHeight * desiredHeight, 0);
+						videoHeight = desiredHeight;
+					}
+					else
+					{
+						videoWidth = desiredWidth;
+						videoHeight = Math.round(imgHeight / imgWidth * desiredWidth, 0);
+					}
+				}
+
+				imgElement = document.createElement("div");
+				imgElement.style.position = "absolute";
+				imgElement.style.width = videoWidth + "px";
+				imgElement.style.height = videoHeight + "px";
+				imgElement.style.zIndex = "99999";
+			}
+
 			this.zoomable = new bigshot.SimpleImage(new bigshot.ImageParameters({
 				container: this.bigshotElement,
 				maxZoom: maxZoom,
 				minZoom: 0,
 				touchUI: false,
-				width: imgWidth,
-				height: imgHeight
-			}), image);
+				width: videoWidth,
+				height: videoHeight
+			}), imgElement);
 
 			// Reset our zoom based on image and window dimensions.
 			this._resetZoom();
+
+			if (videoUrl)
+			{
+				var player = new Clappr.Player({
+					poster: image.src,
+					source: videoUrl,
+					parent: imgElement,
+					width: videoWidth,
+					height: videoHeight
+				});
+			}
 
 			// prevent zoom-on-doubleClick
 			this.zoomable.addEventListener('dblclick', function (ie) {

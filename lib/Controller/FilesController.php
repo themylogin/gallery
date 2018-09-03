@@ -18,6 +18,7 @@ use OCP\ILogger;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 
 use OCA\Gallery\Http\ImageResponse;
@@ -132,6 +133,28 @@ class FilesController extends Controller {
 		}
 
 		return new ImageResponse($download);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * For VOD server: return local storage path of video file
+	 *
+	 * @param int $fileId the ID of the file we want to serve
+	 *
+	 * @return Http\JSONResponse
+	 */
+	public function vod($fileId) {
+		/** @type File $file */
+		try {
+			$file = $this->downloadService->getFile($fileId);
+		} catch (\Exception $exception) {
+			return $this->jsonError($exception, $this->request, $this->logger);
+		}
+
+		return new JSONResponse(
+			['path' => $file->getPath()]
+		);
 	}
 
 }

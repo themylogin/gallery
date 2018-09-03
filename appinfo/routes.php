@@ -84,6 +84,13 @@ return [
 			'verb'     => 'GET',
 			'defaults' => ['fileId' => null]
 		],
+		// VOD
+		[
+			'name'     => 'files#vod',
+			'url'      => '/files/vod/{fileId}',
+			'verb'     => 'GET',
+			'defaults' => ['fileId' => null]
+		],
 		// Batch creation of thumbnails
 		[
 			'name' => 'preview#get_thumbnails',
@@ -112,6 +119,13 @@ return [
 		[
 			'name'     => 'files_public#download',
 			'url'      => '/files.public/download/{fileId}',
+			'verb'     => 'GET',
+			'defaults' => ['fileId' => null]
+		],
+		// VOD
+		[
+			'name'     => 'files_public#vod',
+			'url'      => '/files.public/vod/{fileId}',
 			'verb'     => 'GET',
 			'defaults' => ['fileId' => null]
 		],
